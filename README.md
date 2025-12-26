@@ -37,8 +37,8 @@ The tuning process confirmed that the Azure environment operated stably with **z
 ## 🛠 System Architecture & Features
 
 ### 1. Azure Cloud Infrastructure
-* **VM Size:** Standard_B2s (2 vCPUs, 4GB RAM)
-* **OS:** Ubuntu 20.04 LTS
+* **VM Size:** Standard_B2s (4 vCPUs, 16GB RAM)
+* **OS:** Ubuntu 22.04 LTS
 * **Storage:** Premium SSD
 
 ### 2. Memory Optimization (The "Chunking" Strategy)
