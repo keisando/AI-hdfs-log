@@ -37,7 +37,7 @@ The tuning process confirmed that the Azure environment operated stably with **z
 ## 🛠 System Architecture & Features
 
 ### 1. Azure Cloud Infrastructure
-* **VM Size:** Standard_B2s (4 vCPUs, 16GB RAM)
+* **VM Size:** Azure Standard B4as v2 (4 vCPUs, 16GB RAM)
 * **OS:** Ubuntu 22.04 LTS
 * **Storage:** Premium SSD
 
