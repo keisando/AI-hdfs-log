@@ -1,4 +1,4 @@
-# 🛡️ HDFS Log Analysis System on Azure Cloud
+# 🛡️ HDFS Log Analysis System & Research Findings
 
 ![Python](https://img.shields.io/badge/Python-3.9+-blue.svg)
 ![Azure](https://img.shields.io/badge/Cloud-Microsoft%20Azure-0078D4.svg)
@@ -6,27 +6,42 @@
 ![Status](https://img.shields.io/badge/Status-Completed-success.svg)
 
 ## 📖 Overview
-This project implements an **LSTM Autoencoder-based Anomaly Detection System** for HDFS (Hadoop Distributed File System) logs.
-Designed to overcome resource limitations, the system runs on a **low-spec Azure Virtual Machine**, capable of processing **10 million log lines** continuously over **70 hours** using optimized memory management techniques.
+This project implements an **LSTM Autoencoder-based Anomaly Detection System** for HDFS logs.
+It serves two purposes:
+1.  **System Construction:** Building a robust cloud infrastructure on Azure to process **10 million log lines**.
+2.  **Academic Research:** Analyzing the anomaly detection performance of Unsupervised Learning on large-scale datasets.
 
 ---
 
-## 📸 Dashboard & Results
+## 📸 1. System Achievement (Construction)
 
-### ✅ 1. Analysis Complete (70-Hour Run)
-Successfully processed **9,950,000 lines** without crashing.
+### ✅ Analysis Complete (70-Hour Run)
+Successfully processed **9,950,000 lines** continuously over 70 hours on a low-spec Azure VM without crashing.
 ![Dashboard Screenshot](images/dashboard_complete.jpg)
 
-### 📊 2. Analysis Insights
-**99.90%** of the data was identified as a specific repetitive event pattern (`E5-E22...`), highlighting the need for model tuning against frequent loops.
+### 🛠️ Key Technical Features
+* **Cloud Architecture:** Microsoft Azure VM (Standard_B2s).
+* **Memory Optimization:** Implemented Chunk-based processing with aggressive Garbage Collection (GC) to handle Big Data on limited RAM.
+* **Reliability:** Automated exception handling to ensure continuous operation.
 
+---
+
+## 🔬 2. Research Findings (Analysis)
+
+We conducted a full-scale analysis on the HDFS dataset. The results revealed a critical insight into the model's behavior.
+
+### 📊 Statistical Results
 | Metric | Result |
 | :--- | :--- |
 | **Total Processed** | **9,950,000 lines** |
-| **Runtime** | **~70 hours** |
+| **Detected Anomalies** | 9,950,000 (99.9% of data) |
 | **Dominant Pattern** | `E5-E22...` (99.90%) |
 
-#### Anomaly Score Distribution & Top Events
+### 🧠 Insight: The "Repetitive Loop" Issue
+The analysis identified that **99.90%** of the data consisted of a specific repetitive event pattern (`E5-E22...`).
+The LSTM Autoencoder identified these high-frequency loops as "Anomalies" (High Reconstruction Error), suggesting that the model needs **frequency-based weighting** to distinguish between "system hang" and "normal loops."
+
+#### Visualizations
 <p float="left">
   <img src="images/graph_score.png" width="45%" />
   <img src="images/graph_events.png" width="45%" />
@@ -34,26 +49,13 @@ Successfully processed **9,950,000 lines** without crashing.
 
 ---
 
-## 🚀 Key Features
-
-### 1. Cloud-Optimized Architecture ☁️
-* **Environment:** Microsoft Azure VM (Standard_B2s).
-* **Challenge:** Processing 10M lines on limited RAM (4GB).
-* **Solution:** Implemented a **Chunk-based processing pipeline** with aggressive **Garbage Collection (GC)** to maintain stable memory usage (~2GB) throughout the 70-hour operation.
-
-### 2. Robust Reliability 🛡️
-* **Exception Handling:** Automated error skipping logic ensures the system never stops even when encountering corrupted log lines (e.g., Chunk 18 warning).
-* **Real-time Monitoring:** Custom **Streamlit dashboard** to visualize progress, CPU/Memory usage, and real-time anomaly detection logs.
-
----
-
-## 🛠️ Tech Stack
-* **Infrastructure:** Microsoft Azure Virtual Machines (Ubuntu)
-* **Language:** Python 3.9
-* **ML Model:** LSTM Autoencoder (PyTorch)
-* **Libraries:** Pandas, Scikit-learn, Streamlit, Matplotlib
-* **Dataset:** HDFS System Logs
+## 📂 Repository Contents
+* `app.py`: Real-time Dashboard (Streamlit).
+* `main.py`: Main processing pipeline.
+* `analyze_results.py`: Script for statistical analysis.
+* `visualize_report.py`: Tools for generating graphs.
+* `requirements.txt`: Project dependencies.
 
 ## 👨‍💻 Author
 * **Keisando**
-* *Project for Large-scale System Log Analysis Research*
+* *Large-scale System Log Analysis Research Project*
