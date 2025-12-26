@@ -1,0 +1,4 @@
+Total Processed Anomalies: 9,950,000
+Most Frequent Pattern: E5 E22 E11 E9 E11 E9 E11 E9 E26
+Count of Most Freq: 9,940,043
+Percentage of Top 1: 99.90%
