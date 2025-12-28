@@ -1,6 +1,6 @@
 # AI-hdfs-log: HDFS Log Anomaly Detection System on Azure
 
-![Azure](https://img.shields.io/badge/Azure-B2s%20Instance-0078D4?logo=microsoftazure)
+![Azure](https://img.shields.io/badge/Azure-B4s%20Instance-0078D4?logo=microsoftazure)
 ![Python](https://img.shields.io/badge/Python-3.8%2B-3776AB?logo=python)
 ![Status](https://img.shields.io/badge/Status-Completed-success)
 
