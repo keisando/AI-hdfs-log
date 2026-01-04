@@ -21,7 +21,7 @@ The system is built on a cloud-native architecture to ensure reproducibility and
 
 | Layer | Technology Stack | Description |
 | :--- | :--- | :--- |
-| **Infrastructure** | **Microsoft Azure VM** | Standard D4s v3 (4 vCPUs, 16GB RAM), Ubuntu 22.04 LTS |
+| **Infrastructure** | **Microsoft Azure VM** | Standard B4s v3 (4 vCPUs, 16GB RAM), Ubuntu 22.04 LTS |
 | **Containerization** | **Docker** | Encapsulates the environment to solve dependency issues between Dev (Windows) and Prod (Linux) |
 | **AI Model** | **TensorFlow / Keras** | LSTM Autoencoder for time-series anomaly detection |
 | **Frontend** | **Streamlit** | Interactive web interface for log upload and visualization |
