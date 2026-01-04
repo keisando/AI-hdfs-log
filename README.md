@@ -1,44 +1,80 @@
-# 🛡️ AI-Based HDFS Log Anomaly Detection System
+# Cloud-Based HDFS Anomaly Detection System
 
-![Python](https://img.shields.io/badge/Python-3.10-blue?logo=python&logoColor=white)
-![TensorFlow](https://img.shields.io/badge/TensorFlow-2.15-orange?logo=tensorflow&logoColor=white)
-![Azure](https://img.shields.io/badge/Cloud-Microsoft%20Azure-0078D4?logo=microsoftazure&logoColor=white)
-![Docker](https://img.shields.io/badge/Docker-Container-2496ED?logo=docker&logoColor=white)
-
-**[English]** / [日本語](#-大規模システムログ異常検知システム-japanese)
+![Python](https://img.shields.io/badge/Python-3.10-blue)
+![TensorFlow](https://img.shields.io/badge/TensorFlow-2.x-orange)
+![Azure](https://img.shields.io/badge/Cloud-Microsoft%20Azure-0078D4)
+![Docker](https://img.shields.io/badge/Container-Docker-2496ED)
 
 ## 📖 Overview
-This project is an **AIOps (Artificial Intelligence for IT Operations)** solution designed to detect anomalies in large-scale system logs (HDFS) using **Deep Learning (LSTM Autoencoder)**.
+This project implements a scalable **Anomaly Detection System for HDFS (Hadoop Distributed File System) Logs** using Deep Learning (LSTM Autoencoder).
 
-Unlike typical research that uses small sampled datasets, this project focuses on **scalability and production-readiness**. It successfully processed **10 million lines (1.5 GB)** of raw logs by leveraging cloud infrastructure (Azure) and memory-optimized engineering techniques.
+Traditional manual log monitoring is no longer feasible for large-scale systems. This project aims to automate proactive failure detection by learning "normal" system contexts and identifying deviations. The system was deployed on **Microsoft Azure** using **Docker**, successfully processing over **10 million log lines (approx. 1.6GB)** by overcoming memory constraints through stream processing engineering.
 
-### 🚀 Key Achievements
-- **Scalability**: Processed **9,950,000 log lines** on a 16GB RAM environment using stream processing (Chunking).
-- **Stability**: Achieved **70 hours of continuous operation** without Memory Error (OOM).
-- **Infrastructure**: Fully containerized application using **Docker** on **Microsoft Azure VM**.
-- **Analysis**: Identified structural issues in static thresholding for large-scale real-world data (99.9% anomaly rate).
+![Demo Dashboard](images/demo-dashboard2.png)
+*Fig 1. Real-time Analysis Dashboard built with Streamlit.*
 
 ---
 
-## 🏗️ System Architecture
+## 🏗 System Architecture
 
-The system consists of three main layers designed to handle "Big Data" on limited resources.
+The system is built on a cloud-native architecture to ensure reproducibility and scalability.
 
-```mermaid
-graph TD
-    subgraph Azure_Cloud [Microsoft Azure VM (Standard D4s v3)]
-        style Azure_Cloud fill:#f9f9f9,stroke:#333,stroke-width:2px
-        
-        Input[(HDFS Raw Logs<br/>1.5GB)] -->|Stream Read| Pipe[Data Pipeline]
-        
-        subgraph Docker_Container [Docker Container]
-            style Docker_Container fill:#e1f5fe,stroke:#0277bd,stroke-width:2px
-            
-            Pipe -->|Chunking & GC| Parser[Log Parser<br/>(Drain Algorithm)]
-            Parser -->|Templates| Vector[Feature Engineering]
-            Vector -->|Sequences| Model[LSTM Autoencoder<br/>(TensorFlow)]
-            Model -->|Reconstruction Error| Score[Anomaly Score]
-        end
-        
-        Score -->|Visualization| Dash[Streamlit Dashboard]
-    end
+| Layer | Technology Stack | Description |
+| :--- | :--- | :--- |
+| **Infrastructure** | **Microsoft Azure VM** | Standard D4s v3 (4 vCPUs, 16GB RAM), Ubuntu 22.04 LTS |
+| **Containerization** | **Docker** | Encapsulates the environment to solve dependency issues between Dev (Windows) and Prod (Linux) |
+| **AI Model** | **TensorFlow / Keras** | LSTM Autoencoder for time-series anomaly detection |
+| **Frontend** | **Streamlit** | Interactive web interface for log upload and visualization |
+| **Data Pipeline** | **Pandas & Drain3** | Chunk-based processing and log parsing |
+
+---
+
+## 🚀 Key Technical Highlights
+
+### 1. Overcoming the "Out Of Memory" (OOM) Wall
+Processing 10 million lines of logs (1.6GB) on a standard 16GB RAM machine typically causes OOM errors. I implemented a **Chunk-based Stream Processing** pipeline:
+* **Chunking:** Reading logs in blocks of 50,000 lines using `pd.read_csv(chunksize=...)`.
+* **Garbage Collection:** Explicitly invoking `gc.collect()` after each micro-batch inference to release memory immediately.
+* **Result:** Achieved **70 hours of continuous operation** without crashing.
+
+### 2. Log Structuring with Drain Algorithm
+Since raw logs are unstructured text, I utilized the **Drain algorithm** to parse logs into structured templates (constants) and parameters (variables), converting them into event ID sequences for the LSTM model.
+
+---
+
+## 📊 Experiments & Evaluation
+
+### Baseline Validation (Small Scale)
+First, I trained the model on a small dataset (2,000 lines). The training loss converged smoothly, and the anomaly score distribution for normal data was stable (Mean ≈ 0.16).
+
+<p align="center">
+  <img src="images/training-loss-curve.png" width="45%" alt="Loss Curve">
+</p>
+<p align="center"><em>Fig 2. Training Loss Curve (Smooth convergence)</em></p>
+
+### Large-Scale Verification (10 Million Lines)
+When applied to the full 10M dataset on Azure, the system revealed a critical insight: **Real-world noise causes a "Domain Shift."**
+* **Observation:** The average anomaly score jumped to **8.01** (approx. 130x higher than baseline).
+* **Analysis:** 99.9% of data was flagged as anomalous using static thresholds due to repetitive background system events (e.g., Block processing loops).
+
+![Anomaly Score Distribution](images/anomaly-score-distribution.png)
+*Fig 3. Anomaly Score Distribution (Log Scale). The red bar shows the massive shift in anomaly scores in the production environment.*
+
+### Proposed Solution: Dynamic Thresholding
+To handle this real-world noise, I propose moving from **Static Thresholding** (Red line) to **Dynamic Thresholding** (Blue line), which adapts to the system's baseline noise level in real-time.
+
+![Dynamic Thresholding](images/dynamic-thresholding-concept.png)
+*Fig 4. Concept of Dynamic Thresholding to reduce False Positives.*
+
+---
+
+# 👤 Author: Keisuke Ando
+
+**Undergraduate Student, Fukushima University**
+*School of Symbiotic Systems Science and Technology*
+
+---
+
+### 🔬 Research Focus
+**AIOps, Log Analysis, Cloud Computing**
+![](https://img.shields.io/badge/Azure-0072C6?style=flat-square&logo=microsoft-azure&logoColor=white) ![](https://img.shields.io/badge/Docker-2496ED?style=flat-square&logo=docker&logoColor=white)
