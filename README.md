@@ -5,6 +5,10 @@
 ![Azure](https://img.shields.io/badge/Cloud-Microsoft%20Azure-0078D4)
 ![Docker](https://img.shields.io/badge/Container-Docker-2496ED)
 
+## 📄 Documentation
+For detailed algorithms, mathematical formulations, and extensive experimental results, please refer to the technical research report:
+> [**Download Technical Report (PDF)**](./Technical_Report.pdf)
+> 
 ## 📖 Overview
 This project implements a scalable **Anomaly Detection System for HDFS (Hadoop Distributed File System) Logs** using Deep Learning (LSTM Autoencoder).
 
